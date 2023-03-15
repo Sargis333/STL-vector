@@ -1,38 +1,112 @@
 #include <iostream>
 using namespace std;
+class MyVector {
+public:
 
-class Vector
-{
-public:
-    Vector(){capacity=0, size=0, arr=new int[capacity];}
-    ~Vector(){cout<<arr[0];}
-public:
-void push_front(int i) {
-    Arr *arr = new Arr(i);
-    arr->setNext(Head);
-    Head = arr;
-}
-    void push_back(int elem){if( size==capacity)
-    {
-        capacity*=2;
-        int* tmp=new int[capacity];
-        for(int i=0; i<size;++i)
-            {
-                tmp[i]=arr[i];   
-            }
-        delete[]arr;
-        arr=tmp;
+    MyVector() {
+        size = 0;
+        capacity = 10;
+        array = new int[capacity];
     }
-    arr[size]=elem;
-    size=size+1;
-}
+
+
+    ~MyVector() {
+        delete[] array;
+    }
+
+
+    MyVector(const MyVector& other) {
+        size = other.size;
+        capacity = other.capacity;
+        array = new int[capacity];
+        for (int i = 0; i < size; i++) {
+            array[i] = other.array[i];
+        }
+    }
+
+
+    MyVector& operator=(const MyVector& other) {
+        if (this != &other) {
+            delete[] array;
+            size = other.size;
+            capacity = other.capacity;
+            array = new int[capacity];
+            for (int i = 0; i < size; i++) {
+                array[i] = other.array[i];
+            }
+        }
+        return *this;
+    }
+
+ 
+    void push_back(int value) {
+        if (size == capacity) {
+            capacity *= 2;
+            int* newArray = new int[capacity];
+            for (int i = 0; i < size; i++) {
+                newArray[i] = array[i];
+            }
+            delete[] array;
+            array = newArray;
+        }
+        array[size++] = value;
+    }
+
+    void push_front(int value) {
+        if (size == capacity) {
+            capacity *= 2;
+            int* newArray = new int[capacity];
+            for (int i = size - 1; i >= 0; i--) {
+                newArray[i + 1] = array[i];
+            }
+            delete[] array;
+            array = newArray;
+        } else {
+            for (int i = size - 1; i >= 0; i--) {
+                array[i + 1] = array[i];
+            }
+        }
+        array[0] = value;
+        size++;
+    }
+
+    
+    void pop_back() {
+        if (size > 0) {
+            size--;
+        }
+    }
+
+    
+    int& operator[](int index) {
+        return array[index];
+    }
+
+    
+    int getSize() const {
+        return size;
+    }
+
+    void print(){
+        for(int i=0; i<size; i++){
+            cout<<" "<<array[i];
+        }
+    }
 private:
-    int capacity;
+    int* array;
     int size;
-    int* arr;    
+    int capacity;
 };
 
-int main(){
-    Vector o;
-    o.push_back(100);
+int main() {
+    MyVector myVector;
+
+    myVector.push_back(3);
+    myVector.push_back(7);
+    myVector.push_back(1);
+    myVector.push_back(8);
+
+    myVector.push_front(5);
+    myVector.push_front(2);
+    myVector.print();
 }
