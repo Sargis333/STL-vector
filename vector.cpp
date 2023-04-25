@@ -1,5 +1,6 @@
 #include <iostream>
 using namespace std;
+
 class MyVector {
 public:
 
@@ -8,13 +9,7 @@ public:
         capacity = 10;
         array = new int[capacity];
     }
-
-
-    ~MyVector() {
-        delete[] array;
-    }
-
-
+     
     MyVector(const MyVector& other) {
         size = other.size;
         capacity = other.capacity;
@@ -37,6 +32,14 @@ public:
         }
         return *this;
     }
+
+
+    ~MyVector() {
+        delete[] array;
+    }
+
+
+    
 
  
     void push_back(int value) {
@@ -77,21 +80,34 @@ public:
         }
     }
 
-    
-    int& operator[](int index) {
-        return array[index];
+    void sort() {
+        for (int i = 0; i < size - 1; i++) {
+            for (int j = 0; j < size - i - 1; j++) {
+                if (array[j] > array[j + 1]) {
+                    int temp = array[j];
+                    array[j] = array[j + 1];
+                    array[j + 1] = temp;
+                }
+            }
+        }
     }
 
-    
-    int getSize() const {
-        return size;
+    void erase(int index) {
+        if (index >= 0 && index < size) {
+            for (int i = index; i < size - 1; i++) {
+                array[i] = array[i + 1];
+            }
+            size--;
+        }
     }
 
     void print(){
         for(int i=0; i<size; i++){
             cout<<" "<<array[i];
         }
+        cout<<endl;
     }
+
 private:
     int* array;
     int size;
@@ -107,6 +123,8 @@ int main() {
     myVector.push_back(8);
 
     myVector.push_front(5);
-    myVector.push_front(2);
+    myVector.push_front(9);
+    myVector.sort();
     myVector.print();
+   
 }
